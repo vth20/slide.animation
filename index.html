@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <style>
+        :root {
+            --offset-x-second: calc(0px - ((230px - (230px * var(--scale-rate-second))) / 2 + 20px));
+            --offset-x-third: calc(0px - ((230px - (230px * var(--scale-rate-third))) / 2 + 40px));
+            --scale-rate-second: calc(196 / 230);
+            --scale-rate-third: calc(162 / 230);
+        }
+        * {
+            padding: 0;
+            margin: 0;
+            box-sizing: inherit;
+        }
+
+        body {
+            background-color: #352115;
+            -webkit-user-select: none;
+            user-select: none;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        html {
+            box-sizing: border-box;
+            font-family: "Poppins", sans-serif;
+            scroll-behavior: smooth;
+        }
+        .container__slide-show {
+            width: 230px;
+            height: 244px;
+            display: flex;
+            align-items: center;
+            justify-content: flex-end;
+            transform-style: preserve-3d;
+            position: relative;
+            margin: 100px auto;;
+        }
+        .container__slide-item {
+            width: 230px;
+            height: 230px;
+            position: absolute;
+            transition: all 0.9s;
+            backface-visibility: hidden;
+            will-change: transform, opacity;
+            transform: perspective(1px) translateZ(0);
+        }
+
+
+        .container__slide-img {
+            width: 100%;
+            padding-top: 100%;
+            border-radius: 5px;
+        }
+
+        .container__slide-item.first {
+            opacity: 1;
+            transform: translate3d(0 , 0, 80px) scale(1,1);
+        }
+
+        .container__slide-item.second {
+            opacity: 0.8;
+            transform: translate3d(var(--offset-x-second) , 0, 60px) scale(var(--scale-rate-second), var(--scale-rate-second));
+        }
+
+        .container__slide-item.third {
+            opacity: 0.6;
+            transform: translate3d(var(--offset-x-third) , 0, 20px) scale(var(--scale-rate-third), var(--scale-rate-third))
+        }
+
+        .container__slide-item.fourth {
+            opacity: 0.1;
+            transform: translate3d(var(--offset-x-third) , 0, 0) scale(var(--scale-rate-third), var(--scale-rate-third))
+        }
+
+    </style>
+    <div class="container__slide-show">
+        <div class="container__slide-item first">
+            <div style="background: url('./images/slide1.jpg') no-repeat center center / cover" class="container__slide-img"></div>
+        </div>
+        <div class="container__slide-item second">
+            <div style="background: url('./images/slide2.jpg') no-repeat center center / cover" class="container__slide-img"></div>
+        </div>
+        <div class="container__slide-item third">
+            <div style="background: url('./images/slide3.jpg') no-repeat center center / cover" class="container__slide-img"></div>
+        </div>
+        <div class="container__slide-item fourth">
+            <div style="background: url('./images/slide4.jpg') no-repeat center center / cover" class="container__slide-img"></div>
+        </div>
+        <div class="container__slide-item fourth">
+            <div style="background: url('./images/slide5.jpg') no-repeat center center / cover" class="container__slide-img"></div>
+        </div>
+        <div class="container__slide-item fourth">
+            <div style="background: url('./images/slide6.jpg') no-repeat center center / cover" class="container__slide-img"></div>
+        </div>
+    </div>
+</div>
+    <script>
+        const $ = document.querySelector.bind(document)
+        const $$ = document.querySelectorAll.bind(document)
+
+        const slideImgs = $$('.container__slide-item');
+
+        let imgIndex = 2;
+        function slideShow() {
+            const slideImgFirst = $('.container__slide-item.first')
+            const slideImgSecond = $('.container__slide-item.second')
+            const slideImgThird = slideImgs[imgIndex]
+            const slideImgFourth = slideImgs[imgIndex === slideImgs.length -1 ?  0 : imgIndex + 1]
+            slideImgFourth.classList.replace('fourth', 'third')
+            slideImgThird.classList.replace('third', 'second')
+            slideImgSecond.classList.replace('second', 'first')
+            slideImgFirst.classList.replace('first', 'fourth')
+            imgIndex++;
+            if(imgIndex >= slideImgs.length) { //imgIndex: 0-7, slideImgs.length: 8
+                imgIndex = 0;
+            }
+            setTimeout(slideShow, 2000)
+        }
+
+        slideShow();
+    </script>
+</body>
+</html>
